@@ -3,7 +3,7 @@
     <div class="q-pa-md">
       <q-table
         :title="this.$i18n('allEnvs')"
-        :data="envs"
+        :rows="envs"
         :columns="columns"
         row-key="index"
         :hide-pagination="true"
@@ -191,6 +191,7 @@
 <script>
 import { extend } from 'quasar'
 import defaultEnvs from '../assets/defaultEnvs.json'
+import { toRaw } from 'vue'
 const browser = require('webextension-polyfill')
 
 function downloadTextFile (text, name) {
@@ -323,19 +324,18 @@ export default {
           field: 'operation'
         }
       ],
-      importData: {}
+      importData: []
     }
   },
   methods: {
     onSubmit () {
       if (this.editRowIndex !== null) {
-        this.$set(this.envs, this.editRowIndex, extend(true, {}, this.form))
-        console.log('editRowIndex', this.editRowIndex)
+        this.envs[this.editRowIndex] = extend(true, {}, this.form)
       } else {
         this.envs.push(extend(true, {}, this.form))
       }
       const that = this
-      browser.storage.sync.set({ envs: this.envs }).then(() => {
+      browser.storage.sync.set({ envs: toRaw(that.envs) }).then(() => {
         console.log('envs is set to ', that.envs)
       })
       // reset editing status
@@ -364,24 +364,23 @@ export default {
     },
     deleteEnv (props) {
       this.envs.splice(props.rowIndex, 1)
-      browser.storage.sync.set({ envs: this.envs }).then(() => {
+      browser.storage.sync.set({ envs: toRaw(this.envs) }).then(() => {
         console.log('envs is set to ' + this.envs)
       })
     },
     up (props) {
       const tmp = this.envs[props.rowIndex - 1]
-      this.$set(this.envs, props.rowIndex - 1, this.envs[props.rowIndex])
-      this.$set(this.envs, props.rowIndex, tmp)
-      browser.storage.sync.set({ envs: this.envs }).then(() => {
+      this.envs[props.rowIndex - 1] = this.envs[props.rowIndex]
+      this.envs[props.rowIndex] = tmp
+      browser.storage.sync.set({ envs: toRaw(this.envs) }).then(() => {
         console.log('envs is set to ' + this.envs)
       })
     },
     down (props) {
       const tmp = this.envs[props.rowIndex + 1]
-      this.$set(this.envs, props.rowIndex + 1, this.envs[props.rowIndex])
-      this.$set(this.envs, props.rowIndex, tmp)
-
-      browser.storage.sync.set({ envs: this.envs }).then(() => {
+      this.envs[props.rowIndex + 1] = this.envs[props.rowIndex]
+      this.envs[props.rowIndex] = tmp
+      browser.storage.sync.set({ envs: toRaw(this.envs) }).then(() => {
         console.log('envs is set to ' + this.envs)
       })
     },
@@ -408,12 +407,12 @@ export default {
     },
     mergeImport () {
       this.envs = this.envs.concat(this.importData)
-      browser.storage.sync.set({ envs: this.envs })
+      browser.storage.sync.set({ envs: toRaw(this.envs) })
       this.importConfirm = false
     },
     overwriteImport () {
       this.envs = this.importData
-      browser.storage.sync.set({ envs: this.envs })
+      browser.storage.sync.set({ envs: toRaw(this.envs) })
       this.importConfirm = false
     }
   },
