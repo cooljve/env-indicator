@@ -1,38 +1,38 @@
 [
-    {
-        "envBackgroundColor": "#00a300",
-        "textColor": "#FFFFFF",
-        "envName": "Dev 🤣",
-        "position": "left",
-        "ruleType": "regex",
-        "shape": "triangle",
-        "ruleValue": "(localhost)|(127.0.0.1).*"
-    },
-    {
-        "envBackgroundColor": "#ffff00",
-        "textColor": "#666666",
-        "envName": "Staging 👀",
-        "position": "left",
-        "ruleType": "regex",
-        "shape": "triangle",
-        "ruleValue": "(st\\.)|(staging\\.)"
-    },
-    {
-        "envBackgroundColor": "#ff8000",
-        "textColor": "#FFFFFF",
-        "envName": "Preview 🚗",
-        "position": "left",
-        "ruleType": "regex",
-        "shape": "ribbon",
-        "ruleValue": "(pre\\.)|(preview)"
-    },
-    {
-        "envBackgroundColor": "#ff6666",
-        "textColor": "#FFFFFF",
-        "envName": "Production ⚠️",
-        "position": "left",
-        "ruleType": "suffix",
-        "shape": "ribbon",
-        "ruleValue": ".srv"
-    }
+  {
+    "envBackgroundColor": "#00a300",
+    "envName": "Dev 🤣",
+    "position": "left",
+    "ruleType": "regex",
+    "ruleValue": "(localhost)|(127.0.0.1).*",
+    "shape": "ribbon",
+    "textColor": "#FFFFFF"
+  },
+  {
+    "envBackgroundColor": "#002ca3",
+    "envName": "QA✌️",
+    "position": "left",
+    "ruleType": "contains",
+    "ruleValue": "(qarancher)",
+    "shape": "ribbon",
+    "textColor": "#FFFFFF"
+  },
+  {
+    "envBackgroundColor": "#ff8000",
+    "envName": "INT 🚗",
+    "position": "left",
+    "ruleType": "regex",
+    "ruleValue": "(nptwinsolace)|(-int-diqcs)|(6479967147455550\\.10)|(22int\\%5C)|(itrancher)",
+    "shape": "ribbon",
+    "textColor": "#FFFFFF"
+  },
+  {
+    "envBackgroundColor": "#ff6666",
+    "envName": "PROD ⚠️",
+    "position": "left",
+    "ruleType": "regex",
+    "ruleValue": "(twinsolace)|(-prd-diqcs)|(6236830445984908\\.8)|(22prd\\%5C)|(pdrancher)",
+    "shape": "ribbon",
+    "textColor": "#FFFFFF"
+  }
 ]

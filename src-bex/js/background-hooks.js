@@ -4,6 +4,9 @@
 // More info: https://quasar.dev/quasar-cli/developing-browser-extensions/background-hooks
 
 export default function attachBackgroundHooks (bridge /* , allActiveConnections */) {
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    bridge.send('bex.tab.opened', { status: tab.status, url: tab.url })
+  })
   bridge.on('storage.get', event => {
     const payload = event.data
     if (payload.key === null) {

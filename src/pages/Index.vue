@@ -25,7 +25,8 @@
             @click="importJson"
           />
 
-          <q-btn icon-right="archive" :label="this.$i18n('exportJSON')" no-caps @click="exportJson" />
+          <q-btn icon-right="archive" :label="this.$i18n('exportJSON')" no-caps
+                 @click="exportJson"/>
         </template>
 
         <template v-slot:body-cell-index="props">
@@ -65,8 +66,8 @@
                 @click="down(props)"
                 size="sm"
               />
-              <q-btn icon="edit" color="primary" @click="edit(props)" size="sm" />
-              <q-btn icon="delete" color="red-5" @click="deleteEnv(props)" size="sm" />
+              <q-btn icon="edit" color="primary" @click="edit(props)" size="sm"/>
+              <q-btn icon="delete" color="red-5" @click="deleteEnv(props)" size="sm"/>
             </q-btn-group>
           </q-td>
         </template>
@@ -77,8 +78,8 @@
       <q-card style="width: 700px; max-width: 80vw;">
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">{{ this.$i18n("addEnv") }}</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
+          <q-space/>
+          <q-btn icon="close" flat round dense v-close-popup/>
         </q-card-section>
         <q-card-section>
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
@@ -99,10 +100,11 @@
               <template v-slot:append>
                 <q-icon name="colorize" class="cursor-pointer">
                   <q-popup-proxy transition-show="scale" transition-hide="scale">
-                    <q-color v-model="form.envBackgroundColor" />
+                    <q-color v-model="form.envBackgroundColor"/>
                   </q-popup-proxy>
                 </q-icon>
-                <q-avatar size="24px" :style="{ backgroundColor: form.envBackgroundColor }"></q-avatar>
+                <q-avatar size="24px"
+                          :style="{ backgroundColor: form.envBackgroundColor }"></q-avatar>
               </template>
             </q-input>
 
@@ -115,7 +117,7 @@
               <template v-slot:append>
                 <q-icon name="colorize" class="cursor-pointer">
                   <q-popup-proxy transition-show="scale" transition-hide="scale">
-                    <q-color v-model="form.textColor" />
+                    <q-color v-model="form.textColor"/>
                   </q-popup-proxy>
                 </q-icon>
                 <q-avatar size="24px" :style="{ backgroundColor: form.textColor }"></q-avatar>
@@ -158,8 +160,8 @@
             />
 
             <div>
-              <q-btn label="Save" type="submit" color="primary" />
-              <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+              <q-btn label="Save" type="submit" color="primary"/>
+              <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm"/>
             </div>
           </q-form>
         </q-card-section>
@@ -170,31 +172,34 @@
       i18n
       <q-card>
         <q-card-section class="row items-center">
-          <q-avatar icon="warning" color="primary" text-color="white" />
+          <q-avatar icon="warning" color="primary" text-color="white"/>
           <span class="q-ml-sm">{{ this.$i18n('importWarning') }}</span>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat :label="this.$i18n('cancel')" color="secondary" v-close-popup />
-          <q-btn flat :label="this.$i18n('merge')" color="primary" @click="mergeImport" />
-          <q-btn flat :label="this.$i18n('overwrite')" color="primary" @click="overwriteImport" />
+          <q-btn flat :label="this.$i18n('cancel')" color="secondary" v-close-popup/>
+          <q-btn flat :label="this.$i18n('merge')" color="primary" @click="mergeImport"/>
+          <q-btn flat :label="this.$i18n('overwrite')" color="primary" @click="overwriteImport"/>
         </q-card-actions>
       </q-card>
     </q-dialog>
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="add" color="secondary" @click="addEnv" />
+      <q-btn fab icon="add" color="secondary" @click="addEnv"/>
     </q-page-sticky>
   </q-page>
 </template>
 
 <script>
 import { extend } from 'quasar'
+// import { extend, useQuasar } from 'quasar'
 import defaultEnvs from '../assets/defaultEnvs.json'
 import { toRaw } from 'vue'
+// import { toRaw, onBeforeUnmount } from 'vue'
+
 const browser = require('webextension-polyfill')
 
-function downloadTextFile (text, name) {
+function downloadTextFile(text, name) {
   const a = document.createElement('a')
   const type = name.split('.').pop()
   a.href = URL.createObjectURL(new Blob([text], { type: `text/${type === 'txt' ? 'plain' : type}` }))
@@ -204,7 +209,25 @@ function downloadTextFile (text, name) {
 
 export default {
   name: 'PageIndex',
-  data () {
+  setup() {
+    // const $q = useQuasar()
+    //
+    // function doOnTabOpened(res) {
+    //   if (res.data.status === 'complete') {
+    //     console.log('New Browser Tab: ', res)
+    //   } else {
+    //     console.log('not complete')
+    //   }
+    // }
+    //
+    // $q.bex.on('bex.tab.opened', doOnTabOpened)
+    //
+    // onBeforeUnmount(() => {
+    //   $q.bex.off('bex.tab.opened', doOnTabOpened)
+    // })
+    // return {}
+  },
+  data() {
     return {
       pagination: {
         rowsPerPage: -1 // current rows per page being displayed
@@ -328,7 +351,7 @@ export default {
     }
   },
   methods: {
-    onSubmit () {
+    onSubmit() {
       if (this.editRowIndex !== null) {
         this.envs[this.editRowIndex] = extend(true, {}, this.form)
       } else {
@@ -342,7 +365,7 @@ export default {
       this.editRowIndex = null
       this.formShow = false
     },
-    onReset () {
+    onReset() {
       this.form.envName = null
       this.form.ruleType = 'contains'
       this.form.envBackgroundColor = '#00a300'
@@ -351,24 +374,24 @@ export default {
       this.form.textColor = '#FFFFFF'
       this.form.shape = 'ribbon'
     },
-    addEnv () {
+    addEnv() {
       this.editRowIndex = null
       this.onReset()
       this.formShow = true
     },
-    edit (props) {
+    edit(props) {
       console.log('editing row: ', props.rowIndex, props.row)
       this.editRowIndex = props.rowIndex
       this.form = extend(true, {}, props.row)
       this.formShow = true
     },
-    deleteEnv (props) {
+    deleteEnv(props) {
       this.envs.splice(props.rowIndex, 1)
       browser.storage.sync.set({ envs: toRaw(this.envs) }).then(() => {
         console.log('envs is set to ' + this.envs)
       })
     },
-    up (props) {
+    up(props) {
       const tmp = this.envs[props.rowIndex - 1]
       this.envs[props.rowIndex - 1] = this.envs[props.rowIndex]
       this.envs[props.rowIndex] = tmp
@@ -376,7 +399,7 @@ export default {
         console.log('envs is set to ' + this.envs)
       })
     },
-    down (props) {
+    down(props) {
       const tmp = this.envs[props.rowIndex + 1]
       this.envs[props.rowIndex + 1] = this.envs[props.rowIndex]
       this.envs[props.rowIndex] = tmp
@@ -385,13 +408,13 @@ export default {
       })
     },
 
-    importJson () {
+    importJson() {
       this.$refs.jsonUploader.click()
     },
-    uploadJsonChange (e) {
+    uploadJsonChange(e) {
       const that = this
       const reader = new FileReader()
-      reader.onload = function fileReadCompleted () {
+      reader.onload = function fileReadCompleted() {
         that.importData = JSON.parse(reader.result)
         that.importConfirm = true
         // clear
@@ -399,24 +422,24 @@ export default {
       }
       reader.readAsText(this.$refs.jsonUploader.files[0])
     },
-    exportJson () {
+    exportJson() {
       browser.storage.sync.get(['envs']).then((result) => {
         downloadTextFile(JSON.stringify(result.envs), 'env-indicator-export.json')
       }
       )
     },
-    mergeImport () {
+    mergeImport() {
       this.envs = this.envs.concat(this.importData)
       browser.storage.sync.set({ envs: toRaw(this.envs) })
       this.importConfirm = false
     },
-    overwriteImport () {
+    overwriteImport() {
       this.envs = this.importData
       browser.storage.sync.set({ envs: toRaw(this.envs) })
       this.importConfirm = false
     }
   },
-  mounted () {
+  mounted() {
     const that = this
     browser.storage.sync.get(['envs']).then((result) => {
       that.envs = result.envs
